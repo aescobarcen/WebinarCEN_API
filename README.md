@@ -27,27 +27,29 @@ Este repositorio contiene la documentación, ejemplos de consulta y scripts en l
 
 Para evitar descargar la base de datos completa y optimizar el tiempo de respuesta, se pueden utilizar los siguientes filtros directamente en la URL:
 
-* **Por ID de Instalación:**
+**Por ID de Instalación:**
   ```http
-  GET /api/v1/subestaciones/{id}/
-
-```
-
-* **Filtro por Nombre Exacto:**
-```http
-GET /api/v1/subestaciones/?name=S/E CUMBRE
+  GET /api/v1/subestaciones/{id}
 
 ```
 
 
-* **Filtro por Coincidencia Parcial en Nombre (icontains):**
+**Filtro por Nombre Exacto:**
+ ```http
+
+  GET /api/v1/subestaciones/?name=S/E CUMBRE
+
+ ``` 
+
+
+**Filtro por Coincidencia Parcial en Nombre (icontains):**
 ```http
 GET /api/v1/subestaciones/?name__icontains=CUMBRE
 
 ```
 
 
-* **Filtro por Empresa Propietaria:**
+**Filtro por Empresa Propietaria:**
 ```http
 GET /api/v1/panos/?propietario__icontains=TRANSMISORA
 
@@ -174,8 +176,3 @@ Total Activos = COUNTROWS(TablaActivos)
 ```
 
 * Configurar tarjetas KPI y tablas de control para visualizar el inventario consolidado en tiempo real.
-
-
-```
-
-```
