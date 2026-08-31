@@ -7,3 +7,4 @@ Para el ejemplo:
     https://activos-tx-prod.appspot.com/api/v1/subestaciones/
     https://activos-tx-prod.appspot.com/api/v1/panos/
     https://activos-tx-prod.appspot.com/api/v1/empresas/
+

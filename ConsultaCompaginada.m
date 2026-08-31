@@ -1,34 +1,31 @@
 let
-    // 1. FUNCIÓN GetPage: Solicita una página y gestiona el código HTTP 404
+    // 1. Función parametrizada con captura del código HTTP 404
     GetPage = (pageNumber as number) as list =>
         let
-            // URL parametrizada por número de página
-            Url = "[https://activos-tx-prod.appspot.com/api/v1/subestaciones/?page=](https://activos-tx-prod.appspot.com/api/v1/subestaciones/?page=)" & Text.From(pageNumber),
+            // Endpoint parametrizado por número de página
+            Url = "https://URL_DE_TU_API/endpoint/?page=" & Text.From(pageNumber),
             
-            // Intercepta el estado HTTP 404 para evitar un fallo fatal en Power Query
+            // Intercepta el código 404 para evitar que Power BI aborte la consulta
             Response = Web.Contents(Url, [ManualStatusHandling = {404}]),
             StatusCode = Value.Metadata(Response)[Response.Status]?,
             
-            // Si la respuesta es 200 OK extrae los datos; si es 404 o error, devuelve una lista vacía
+            // Si la llamada es exitosa (200), extrae los resultados; si no (404), retorna lista vacía
             Data = if StatusCode = 200 then
-                        let 
-                            Json = Json.Document(Binary.Buffer(Response))
-                        in 
-                            if Record.HasFields(Json, "results") then Json[results] else {}
+                        Json.Document(Binary.Buffer(Response))[results]
                    else
                         {}
         in
             Data,
 
-    // 2. BUCLE DINÁMICO: Consulta páginas consecutivas hasta recibir una lista vacía
+    // 2. Bucle dinámico que itera hasta recibir una lista vacía
     AllPagesList = List.Generate(
-        () => [Page = 1, Results = GetPage(1)],                  // Inicio: Página 1
-        each List.Count([Results]) > 0,                          // Condición de parada: Mientras existan datos
-        each [Page = [Page] + 1, Results = GetPage([Page] + 1)], // Avance: Incrementa número de página
-        each [Results]                                           // Salida: Lista de resultados por página
+        () => [Page = 1, Results = GetPage(1)],                  // Inicio en página 1
+        each List.Count([Results]) > 0,                          // Condición de parada (Count = 0)
+        each [Page = [Page] + 1, Results = GetPage([Page] + 1)], // Incremento
+        each [Results]                                           // Selección de salida
     ),
 
-    // 3. CONSOLIDACIÓN: Unifica todas las páginas en una sola tabla de Power Query
+    // 3. Consolidación de páginas y conversión a estructura tabular
     CombinedList = List.Combine(AllPagesList),
     #"Converted to Table" = Table.FromList(CombinedList, Splitter.SplitByNothing(), null, null, ExtraValues.Error)
 in
