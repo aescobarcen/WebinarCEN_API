@@ -1,0 +1,16 @@
+
+    {"id": 4,
+    "propietario": { "id": "P_574","name": "DIEGO DE ALMAGRO TRANSMISORA DE ENERGÍA S.A."},
+    "decreto_id": 255,
+    "categoria_vu_id": 6,
+    "nodo": {"id": 8,"name": "PA S/E ILLAPA J1","type": "pano","reference": "panos"},
+    "inf_id": 13887,
+    "name": "DES S/E ILLAPA J1-1",
+    "description": null,
+    "status": "EN_OPERACION",
+    "estructura_ssee": [19],
+    "oocc": [24],
+    "datasheet": {
+        "corrienteCortocircuito": {"unidad": "kA","magnitud": 40},
+        "fechaEntradaEnOperacion": "2019-01-16",
+        "ESTADO_CERTIFICACION": {}}}
